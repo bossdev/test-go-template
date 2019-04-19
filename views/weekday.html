@@ -1,0 +1,61 @@
+{{define "title"}}
+    Calculate Weekend
+{{end}}
+{{define "body"}}
+    <div class="container mt-4 mb-4">
+        <h2>What weekday is today?</h2>
+        <form>
+            <div class="form-group">
+                <label for="selectDay">Day</label>
+                <select class="form-control" id="selectDay">
+                    <option value="1">1</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectMonth">Month</label>
+                <select class="form-control" id="selectMonth">
+                    {{range .months}}
+                        <option value="{{.num}}" data-amountday={{.amountDay}}>{{.month}}</option>
+                    {{end}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectYear">Year</label>
+                <select class="form-control" id="selectYear">
+                    {{range .years}}
+                        <option value="{{.}}">{{.}}</option>
+                    {{end}}
+                </select>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(function(){
+            function setNumberDayOfMonth(monthSelected){
+                var maxDay = monthSelected.data("amountday");
+                daySelected = $("#selectDay").val();
+                $("#selectDay").empty();
+
+                // Check leap year
+                if(monthSelected.text()=="February"){
+                    if($("#selectYear").val()%4 == 0){
+                        maxDay++;
+                    }
+                }
+                for(var i=1;i<=maxDay;i++){
+                    var optionSelectDay = "<option value='"+i+"'>"+i+"</option>";
+                    $("#selectDay").append(optionSelectDay);
+                }
+                var defaultDay = daySelected;
+                if(maxDay < daySelected){
+                    defaultDay = maxDay;
+                }
+                $("#selectDay").val(defaultDay);
+            }
+            setNumberDayOfMonth($("#selectMonth").children("option:selected"));
+            $("#selectMonth , #selectYear").change(function(){
+                setNumberDayOfMonth($("#selectMonth").children("option:selected"));
+            });
+        });
+    </script>
+{{end}}
