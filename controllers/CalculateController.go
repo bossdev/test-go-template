@@ -42,9 +42,9 @@ func GetCalculateWeekdayPage(ec echo.Context) error {
 	}
 
 	return ec.Render(http.StatusOK, "weekday.html", map[string]interface{}{
-		// "host": abPath,
-		"months": months,
-		"years":  years,
+		"months":      months,
+		"years":       years,
+		"currentYear": years[len(years)-1],
 	})
 }
 
