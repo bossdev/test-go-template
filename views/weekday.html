@@ -4,16 +4,16 @@
 {{define "body"}}
     <div class="container mt-4 mb-4">
         <h2>What weekday is today?</h2>
-        <form>
+        <form id="formCalculateWeekdayFromDate">
             <div class="form-group">
                 <label for="selectDay">Day</label>
-                <select class="form-control" id="selectDay">
+                <select class="form-control" name="day" id="selectDay">
                     <option value="1">1</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="selectMonth">Month</label>
-                <select class="form-control" id="selectMonth">
+                <select class="form-control" name="month" id="selectMonth">
                     {{range .months}}
                         <option value="{{.num}}" data-amountday={{.amountDay}}>{{.month}}</option>
                     {{end}}
@@ -21,13 +21,17 @@
             </div>
             <div class="form-group">
                 <label for="selectYear">Year</label>
-                <select class="form-control" id="selectYear">
+                <select class="form-control" name="year" id="selectYear">
                     {{range .years}}
                         <option value="{{.}}">{{.}}</option>
                     {{end}}
                 </select>
             </div>
+            <button type="submit">Calculate</button>
         </form>
+        <div>
+            <p id="calculateResult"></p>
+        </div>
     </div>
     <script>
         $(function(){
@@ -55,6 +59,32 @@
             setNumberDayOfMonth($("#selectMonth").children("option:selected"));
             $("#selectMonth , #selectYear").change(function(){
                 setNumberDayOfMonth($("#selectMonth").children("option:selected"));
+            });
+
+            $("#formCalculateWeekdayFromDate").submit(function(e){
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url: "calWeekday",
+                    data: formData,
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    success: function(res){
+                        console.log("Calculate success")
+                        $("#calculateResult").html(
+                            formData.get("day")
+                            +" "+$("#selectMonth option[value='"+formData.get("month")+"']").text()
+                            +" "+formData.get("year")
+                            +" is <b>"+res.message+"</b>"
+                        );
+                    },
+                    error: function(res){
+                        console.log("Calculate failed")
+                        $("#calculateResult").html("<span style='color:red'>Calculate failed</span>");
+                    }
+                });
             });
         });
     </script>

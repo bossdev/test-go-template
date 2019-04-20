@@ -78,7 +78,7 @@ func CalculateWeekdayOfDate(ec echo.Context) error {
 	}
 	log.Println(calWeekday.Day, calWeekday.Month, calWeekday.Year)
 
-	// Get front and back unit year Ex: 1900 (19 and 00)
+	// Get front and back unit year Ex: 1900 (front is 19 and back is 00)
 	strYear := strconv.Itoa(calWeekday.Year)
 	frontStrYear := strYear[:2]
 	backStrYear := strYear[2:]
@@ -87,14 +87,18 @@ func CalculateWeekdayOfDate(ec echo.Context) error {
 	if calWeekday.Month >= 11 {
 		backUnitYear--
 	}
-
-	set1 := (13*calWeekday.Month - 1) / 5
+	set1 := ((2.6 * float64(calWeekday.Month)) - 0.2)
 	set2 := backUnitYear / 4
 	set3 := frontUnitYear / 4
+	num := (calWeekday.Day + int(set1) - (2 * frontUnitYear) + backUnitYear + int(set2) + int(set3)) % 7
+	if num < 0 {
+		num += 7
+	}
 
-	num := calWeekday.Day + int(set1) + backUnitYear + int(set2) + int(set3) - 2*20
-	log.Println(num)
-	log.Println(num % 7)
+	res := map[string]interface{}{
+		"status":  "success",
+		"message": weekDay[num],
+	}
 
-	return ec.JSON(200, weekDay[num%7])
+	return ec.JSON(http.StatusOK, res)
 }
