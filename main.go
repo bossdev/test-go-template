@@ -35,6 +35,7 @@ func MakeTemplate(e *echo.Echo) {
 
 func main() {
 	fmt.Println("Start program calculate weekday from date")
+	fmt.Println("--- Go to http://localhost or http://127.0.0.1/ ---")
 
 	e := echo.New()
 
