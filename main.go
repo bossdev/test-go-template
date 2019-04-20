@@ -35,13 +35,13 @@ func MakeTemplate(e *echo.Echo) {
 
 func main() {
 	fmt.Println("Start program calculate weekday from date")
-	// fs := http.FileServer(http.Dir("assets/"))
-	// http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	e := echo.New()
 
 	MakeTemplate(e)
 	rt := routes.Routers{e}
 	rt.GetRouter()
 
+	e.Static("/assets", "assets")
 	e.Start(":80")
 }

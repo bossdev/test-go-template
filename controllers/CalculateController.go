@@ -11,19 +11,7 @@ import (
 )
 
 func GetCalculateWeekdayPage(ec echo.Context) error {
-	// return ec.HTML(200, "<p>sssa</p>")
-	// log.Println(filepath.Abs("assets/images/410116.jpg"))
-	// abPath, _ := filepath.Abs("")
-	// log.Println(abPath)
-	// f, _ := os.Open("assets/images/410116.jpg")
-	// log.Println(f)
-	// log.Println(ec.Request().Host)
-	// log.Println(ec.Request().URL.Path)
-	// return ec.Stream(http.StatusOK, "image/png", f)
-
-	// return ec.HTML(200, "<img src='../assets/images/410116.jpg' />")
-
-	// Month february is 12 because this month has leap year calculate
+	// Month (March = 1, April = 2 ... December = 10 and january = 11, February = 12)
 	months := []map[string]interface{}{
 		{"num": 11, "month": "January", "amountDay": 31},
 		{"num": 12, "month": "February", "amountDay": 28},
@@ -76,7 +64,6 @@ func CalculateWeekdayOfDate(ec echo.Context) error {
 	if err := ec.Bind(calWeekday); err != nil {
 		log.Println(err)
 	}
-	log.Println(calWeekday.Day, calWeekday.Month, calWeekday.Year)
 
 	// Get front and back unit year Ex: 1900 (front is 19 and back is 00)
 	strYear := strconv.Itoa(calWeekday.Year)

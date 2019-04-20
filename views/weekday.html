@@ -2,35 +2,41 @@
     Calculate Weekend
 {{end}}
 {{define "body"}}
-    <div class="container mt-4 mb-4">
+    <div class="container mt-4 mb-2">
         <h2>What weekday is today?</h2>
-        <form id="formCalculateWeekdayFromDate">
-            <div class="form-group">
-                <label for="selectDay">Day</label>
-                <select class="form-control" name="day" id="selectDay">
-                    <option value="1">1</option>
-                </select>
+        <div class="row">
+            <div class="col-md-6 p-3">
+                <form id="formCalculateWeekdayFromDate">
+                    <div class="form-group">
+                        <label for="selectDay">Day</label>
+                        <select class="form-control" name="day" id="selectDay">
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectMonth">Month</label>
+                        <select class="form-control" name="month" id="selectMonth">
+                            {{range .months}}
+                                <option value="{{.num}}" data-amountday={{.amountDay}}>{{.month}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectYear">Year</label>
+                        <select class="form-control" onfocus='this.size=10;' 
+                        onblur='this.size=1;' 
+                        onchange='this.size=1; this.blur();' name="year" id="selectYear">
+                            {{range .years}}
+                                <option value="{{.}}">{{.}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Calculate</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="selectMonth">Month</label>
-                <select class="form-control" name="month" id="selectMonth">
-                    {{range .months}}
-                        <option value="{{.num}}" data-amountday={{.amountDay}}>{{.month}}</option>
-                    {{end}}
-                </select>
+            <div class="col-md-6 p-3 border-left" id="boxResultWeekday">
+                <p id="calculateResult" style="font-size:26px;"><span style="color:#999;">Select date for calculate weekday.</span></p>
             </div>
-            <div class="form-group">
-                <label for="selectYear">Year</label>
-                <select class="form-control" name="year" id="selectYear">
-                    {{range .years}}
-                        <option value="{{.}}">{{.}}</option>
-                    {{end}}
-                </select>
-            </div>
-            <button type="submit">Calculate</button>
-        </form>
-        <div>
-            <p id="calculateResult"></p>
         </div>
     </div>
     <script>
